@@ -1,31 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
          <script src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
-		<img src="" id="frame" style="width:480px; height:320px"/>
-		<div id="log"></div>
+		<img src="" id="frame" style="width:680px; height:320px"/>
+		<div id="logger"></div>
 
 		<script type="text/javascript">
 
-			var img; 
-
-			function Init() {
-				img = document.getElementById("frame");	
-			}
-
-			$(document).ready(function () {
-				Init();
-			});
+			var img = document.getElementById("frame");	
+			var logger = document.getElementById('logger');
 
 		    /* SOCKET.IO */
 
-
 		    var socket = io.connect(window.document.location.host);
-
 
 		    socket.on('connect', function () {
 		    	log('connected');
@@ -42,10 +32,9 @@
 
 		    /* END SOCKET.IO */
 
-
-			function log(msg){
-				document.getElementById('log').innerHTML = msg + "<br/>" + document.getElementById('log').innerHTML ;
-			}
+			function log(message) {
+		       logger.innerHTML = logger.innerHTML + message + "<br/>";
+		    };
 			
 		</script>	
 

@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
          <script src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
 		<h1>Video Broadcasting</h1>
-		<video id = "video" autoplay="true" style="width: 680px; heigth: 680px;"></video>
+		<video id = "video" autoplay="true" style="width: 680px; heigth: 320px;"></video>
 		<div id = "logger"></div>
 
 
@@ -17,13 +16,11 @@
 			    var logger = document.getElementById('logger');
 			    var canvas = document.createElement('canvas');
 			    var context = canvas.getContext('2d');
-			    //context.width = 320;
-			    //context.height = 320;
 			    context.width = 120;
 			    context.height = 120;
 
 
-				var log = function(message) {
+				function log(message) {
 			       logger.innerHTML = logger.innerHTML + message + "<br/>";
 			    };
 
@@ -42,7 +39,6 @@
 			    } else {
 			        log('Cannot access to the camera');
 			    };
-
 
 
 			    /* SOCKET.IO */
@@ -71,8 +67,6 @@
 			        emit(canvas.toDataURL('image/webp'));
 			        setTimeout(function() { draw(video, context); }, 1000);
 			    }
-
-	        	//setInterval(function() { draw(video, context); }, 100);
 
 		</script>
 
