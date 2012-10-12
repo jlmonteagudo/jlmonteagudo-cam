@@ -1,45 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
          <script src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
-		<h1>STREAMING CAM</h1>
-		<video id = "sourcevid" autoplay="true"></video>
-		<canvas id = "output"></canvas>
-		<div id = "log"></div>
+		<h1>Video Broadcasting</h1>
+		<video id = "video" autoplay="true" style="width: 680px; heigth: 680px;"></video>
+		<div id = "logger"></div>
+
 
 		<script type="text/javascript">
 
-			var log = function(msg) {
-			       document.getElementById('log').innerHTML = document.getElementById('log').innerHTML + msg + "<br/>";
+			    var video = document.getElementById('video');
+			    var logger = document.getElementById('logger');
+			    var canvas = document.createElement('canvas');
+			    var context = canvas.getContext('2d');
+			    //context.width = 320;
+			    //context.height = 320;
+			    context.width = 120;
+			    context.height = 120;
+
+
+				var log = function(message) {
+			       logger.innerHTML = logger.innerHTML + message + "<br/>";
 			    };
-			    var video = document.getElementsByTagName('video')[0],
-			        heading = document.getElementsByTagName('h1')[0];
+
+
 			    if(navigator.getUserMedia) {
 			        navigator.getUserMedia('video', successCallback, errorCallback);
 
 			        function successCallback( stream ) {
-			        	heading.textContent = "Emitiendo";
+			        	log('Broadcasting...');
 			            video.src = stream;
 			        };
 
 			        function errorCallback( error ) {
-			            heading.textContent = "An error occurred: [CODE " + error.code + "]";
+			            log('Error broadcasting: ' + error.code );
 			        };
 			    } else {
-			        heading.textContent = "Native web camera streaming is not supported in this browser!";
+			        log('Cannot access to the camera');
 			    };
-
-			    var back = document.createElement('canvas');
-			    var backcontext = back.getContext('2d');
 
 
 
 			    /* SOCKET.IO */
 
-			    //var socket = io.connect('http://192.168.1.128:5000');
 			    var socket = io.connect(window.document.location.host);
 
 
@@ -51,34 +58,21 @@
 			    	log('disconnected');
 			    });
 
-			    function send(msg) {
-			    	socket.emit('data', msg);
+			    function emit(message) {
+			    	socket.emit('data', message);
 			    }
 
 			    /* END SOCKET.IO */
 
+			    draw(video, context);
 
-			    cw = 120;//240;//video.clientWidth;
-			    ch = 200;//400;//video.clientHeight;
-			    log('width = ' + ch);
-			    back.width = cw;
-			    back.height = ch;
-			    draw(video, backcontext, cw, ch);
-
-			    function draw(v, bc, w, h) {
-
-			        // First, draw it into the backing canvas
-			        bc.drawImage(v, 0, 0, w, h);
-
-			        // Grab the pixel data from the backing canvas
-			        var stringData=back.toDataURL();
-
-			        // send it on the wire
-			        send(stringData);
-
-			        // Start over! 10 frames a second = 100milliseconds
-			        setTimeout(function(){ draw(v, bc, w, h); }, 500);
+			    function draw(video, context) {
+			        context.drawImage(video, 0, 0, context.width, context.height);
+			        emit(canvas.toDataURL('image/webp'));
+			        setTimeout(function() { draw(video, context); }, 1000);
 			    }
+
+	        	//setInterval(function() { draw(video, context); }, 100);
 
 		</script>
 
