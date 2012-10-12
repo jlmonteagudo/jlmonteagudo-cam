@@ -6,7 +6,7 @@
 	</head>
 
 	<body>
-		<img src="" id="frame" style="width:480px; height:320px"/>
+		<img src="" id="frame" style="width:240px;height:400px"/>
 		<div id="log"></div>
 
 		<script type="text/javascript">
@@ -14,39 +14,48 @@
 			var img; 
 
 			function Init() {
+
 				img = document.getElementById("frame");	
+
 			}
 
 			$(document).ready(function () {
+
 				Init();
+
 			});
 
-		    /* SOCKET.IO */
+
+			    /* SOCKET.IO */
 
 
-		    var socket = io.connect(window.document.location.host);
+			    //var socket = io.connect('http://192.168.1.128:5000');
+			    var socket = io.connect(window.document.location.host);
+			    
 
 
-		    socket.on('connect', function () {
-		    	log('connected');
-		    });
+			    socket.on('connect', function () {
+			    	log('connected');
+			    });
 
-		    socket.on('disconnect', function () {
-		    	log('disconnected');
-		    });
+			    socket.on('disconnect', function () {
+			    	log('disconnected');
+			    });
 
-		    socket.on('data', function(data) {
-		    	img.src = data;
-		    });
+			    socket.on('data', function(data) {
+			    	img.src = data;
+			    });
 
 
-		    /* END SOCKET.IO */
+			    /* END SOCKET.IO */
+
 
 
 			function log(msg){
+
 				document.getElementById('log').innerHTML = msg + "<br/>" + document.getElementById('log').innerHTML ;
+
 			}
-			
 		</script>	
 
 	</body>

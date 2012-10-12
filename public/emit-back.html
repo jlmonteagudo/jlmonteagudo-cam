@@ -39,8 +39,7 @@
 
 			    /* SOCKET.IO */
 
-			    //var socket = io.connect('http://192.168.1.128:5000');
-			    var socket = io.connect(window.document.location.host);
+			    var socket = io.connect('http://192.168.1.128:5000');
 
 
 			    socket.on('connect', function () {
@@ -58,26 +57,19 @@
 			    /* END SOCKET.IO */
 
 
+
+
 			    cw = 120;//240;//video.clientWidth;
 			    ch = 200;//400;//video.clientHeight;
-			    log('width = ' + ch);
 			    back.width = cw;
 			    back.height = ch;
 			    draw(video, backcontext, cw, ch);
 
 			    function draw(v, bc, w, h) {
-
-			        // First, draw it into the backing canvas
 			        bc.drawImage(v, 0, 0, w, h);
-
-			        // Grab the pixel data from the backing canvas
 			        var stringData=back.toDataURL();
-
-			        // send it on the wire
 			        send(stringData);
-
-			        // Start over! 10 frames a second = 100milliseconds
-			        setTimeout(function(){ draw(v, bc, w, h); }, 500);
+			        setTimeout(function(){ draw(v, bc, w, h); }, 100);
 			    }
 
 		</script>
