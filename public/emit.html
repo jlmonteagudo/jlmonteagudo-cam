@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+         <script src="/socket.io/socket.io.js"></script>
+	</head>
+
+	<body>
+		<h1>Video Broadcasting</h1>
+		<video id = "video" autoplay="true" style="width: 680px; heigth: 680px;"></video>
+		<div id = "logger"></div>
+
+
+		<script type="text/javascript">
+
+			    var video = document.getElementById('video');
+			    var logger = document.getElementById('logger');
+			    var canvas = document.createElement('canvas');
+			    var context = canvas.getContext('2d');
+			    //context.width = 320;
+			    //context.height = 320;
+			    context.width = 120;
+			    context.height = 120;
+
+
+				var log = function(message) {
+			       logger.innerHTML = logger.innerHTML + message + "<br/>";
+			    };
+
+
+			    if(navigator.getUserMedia) {
+			        navigator.getUserMedia('video', successCallback, errorCallback);
+
+			        function successCallback( stream ) {
+			        	log('Broadcasting...');
+			            video.src = stream;
+			        };
+
+			        function errorCallback( error ) {
+			            log('Error broadcasting: ' + error.code );
+			        };
+			    } else {
+			        log('Cannot access to the camera');
+			    };
+
+
+
+			    /* SOCKET.IO */
+
+			    var socket = io.connect('http://192.168.1.129:3000');
+			    //var socket = io.connect('http://172.32.1.224:3000');
+			    //var socket = io.connect('http://jlmonteagudo-cam.cloudfoundry.com/');
+
+
+			    socket.on('connect', function () {
+			    	log('connected');
+			    });
+
+			    socket.on('disconnect', function () {
+			    	log('disconnected');
+			    });
+
+			    function emit(message) {
+			    	socket.emit('data', message);
+			    }
+
+			    /* END SOCKET.IO */
+
+			    draw(video, context);
+
+			    function draw(video, context) {
+			        context.drawImage(video, 0, 0, context.width, context.height);
+			        emit(canvas.toDataURL('image/webp'));
+			        setTimeout(function() { draw(video, context); }, 500);
+			    }
+
+	        	//setInterval(function() { draw(video, context); }, 100);
+
+		</script>
+
+	</body>
+
+</html>

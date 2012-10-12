@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+         <script src="/socket.io/socket.io.js"></script>
+	</head>
+
+	<body>
+		<img src="" id="frame" style="width:480px; height:320px"/>
+		<div id="log"></div>
+
+		<script type="text/javascript">
+
+			var img; 
+
+			function Init() {
+				img = document.getElementById("frame");	
+			}
+
+			$(document).ready(function () {
+				Init();
+			});
+
+		    /* SOCKET.IO */
+
+
+		    var socket = io.connect(window.document.location.host);
+
+
+		    socket.on('connect', function () {
+		    	log('connected');
+		    });
+
+		    socket.on('disconnect', function () {
+		    	log('disconnected');
+		    });
+
+		    socket.on('data', function(data) {
+		    	img.src = data;
+		    });
+
+
+		    /* END SOCKET.IO */
+
+
+			function log(msg){
+				document.getElementById('log').innerHTML = msg + "<br/>" + document.getElementById('log').innerHTML ;
+			}
+			
+		</script>	
+
+	</body>
+</html>
