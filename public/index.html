@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>Cam Broadcasting</title>
+		<title>Video Broadcasting</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>	
 	</head>
 
 	<body>
-		<h1>Cam Broadcasting</h1>
 
-		<a href="emit.html">Emit Video</a><br/>
-		<a href="display.html">Display Video</a><br/>
+		<h1>Video Broadcast</h1>
+
+		<div data-role="page" id="page1">
+		    <div data-theme="a" data-role="header">
+		        <h3>
+		            Video Broadcast
+		        </h3>
+		    </div>
+		    <div data-role="content">
+		        <ul data-role="listview" data-divider-theme="b" data-inset="false">
+		            <li data-role="list-divider" role="heading">
+		                ¿Qué quieres hacer?
+		            </li>
+		            <li data-theme="c">
+		                <a href="emit.html" data-transition="slide" data-ajax="false">
+		                    Emitir Video
+		                </a>
+		            </li>
+		            <li data-theme="c">
+		                <a href="display.html" data-transition="slide" data-ajax="false">
+		                    Visualizar Video
+		                </a>
+		            </li>
+		        </ul>
+		    </div>
+		</div>
 
 	</body>
 </html>

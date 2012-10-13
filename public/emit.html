@@ -1,72 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-         <script src="/socket.io/socket.io.js"></script>
+		<title>Emitir Video</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>	
+        <script src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
-		<h1>Video Broadcasting</h1>
-		<video id = "video" autoplay="true" style="width: 680px; heigth: 320px;"></video>
-		<div id = "logger"></div>
+
+
+		<div data-role="page" id="page1">
+		    <div data-theme="a" data-role="header">
+		        <a data-role="button" href="index.html" class="ui-btn-left" data-ajax="false">
+		            Home
+		        </a>
+		        <h3>
+		            Emitir Video
+		        </h3>
+		    </div>
+		    <div data-role="content">
+				<video id = "video" autoplay="true" style="width: 680px; heigth: 320px;"></video>
+				<div id = "logger"></div>
+		    </div>
+		</div>
 
 
 		<script type="text/javascript">
 
-			    var video = document.getElementById('video');
-			    var logger = document.getElementById('logger');
-			    var canvas = document.createElement('canvas');
-			    var context = canvas.getContext('2d');
-			    context.width = 120;
-			    context.height = 120;
+		    var video = document.getElementById('video');
+		    var logger = document.getElementById('logger');
+		    var canvas = document.createElement('canvas');
+		    var context = canvas.getContext('2d');
+		    context.width = 120;
+		    context.height = 120;
 
 
-				function log(message) {
-			       logger.innerHTML = logger.innerHTML + message + "<br/>";
-			    };
+			function log(message) {
+		       logger.innerHTML = logger.innerHTML + message + "<br/>";
+		    };
 
 
-			    if(navigator.getUserMedia) {
-			        navigator.getUserMedia('video', successCallback, errorCallback);
+		    if(navigator.getUserMedia) {
+		        navigator.getUserMedia('video', successCallback, errorCallback);
 
-			        function successCallback( stream ) {
-			        	log('Broadcasting...');
-			            video.src = stream;
-			        };
+		        function successCallback( stream ) {
+		        	log('Broadcasting...');
+		            video.src = stream;
+		        };
 
-			        function errorCallback( error ) {
-			            log('Error broadcasting: ' + error.code );
-			        };
-			    } else {
-			        log('Cannot access to the camera');
-			    };
-
-
-			    /* SOCKET.IO */
-
-			    var socket = io.connect(window.document.location.host);
+		        function errorCallback( error ) {
+		            log('Error broadcasting: ' + error.code );
+		        };
+		    } else {
+		        log('Cannot access to the camera');
+		    };
 
 
-			    socket.on('connect', function () {
-			    	log('connected');
-			    });
+		    /* SOCKET.IO */
 
-			    socket.on('disconnect', function () {
-			    	log('disconnected');
-			    });
+		    var socket = io.connect(window.document.location.host);
 
-			    function emit(message) {
-			    	socket.emit('data', message);
-			    }
 
-			    /* END SOCKET.IO */
+		    socket.on('connect', function () {
+		    	log('connected');
+		    });
 
-			    draw(video, context);
+		    socket.on('disconnect', function () {
+		    	log('disconnected');
+		    });
 
-			    function draw(video, context) {
-			        context.drawImage(video, 0, 0, context.width, context.height);
-			        emit(canvas.toDataURL('image/webp'));
-			        setTimeout(function() { draw(video, context); }, 1000);
-			    }
+		    function emit(message) {
+		    	socket.emit('data', message);
+		    }
+
+		    /* END SOCKET.IO */
+
+		    draw(video, context);
+
+		    function draw(video, context) {
+		        context.drawImage(video, 0, 0, context.width, context.height);
+		        emit(canvas.toDataURL('image/webp'));
+		        setTimeout(function() { draw(video, context); }, 1000);
+		    }
 
 		</script>
 

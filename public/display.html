@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-         <script src="/socket.io/socket.io.js"></script>
+		<title>Visualizar Video</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1"> 
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>	
+        <script src="/socket.io/socket.io.js"></script>
 	</head>
 
 	<body>
-		<img src="" id="frame" style="width:680px; height:320px"/>
-		<div id="logger"></div>
+
+
+		<div data-role="page" id="page1">
+		    <div data-theme="a" data-role="header">
+		        <a data-role="button" href="index.html" class="ui-btn-left" data-ajax="false">
+		            Home
+		        </a>
+		        <h3>
+		            Visualizar Video
+		        </h3>
+		    </div>
+		    <div data-role="content">
+				<img src="" id="frame" style="width:680px; height:320px"/>
+				<div id="logger"></div>
+		    </div>
+		</div>
+
+
 
 		<script type="text/javascript">
 
