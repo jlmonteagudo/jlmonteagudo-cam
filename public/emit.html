@@ -78,13 +78,12 @@
 
 		    /* END SOCKET.IO */
 
-		    draw(video, context);
-
-		    function draw(video, context) {
+		    function sendFrame(video, context) {
 		        context.drawImage(video, 0, 0, context.width, context.height);
 		        emit(canvas.toDataURL('image/webp'));
-		        setTimeout(function() { draw(video, context); }, 1000);
 		    }
+
+		    setInterval(function() { sendFrame(video, context); }, 1000);
 
 		</script>
 
