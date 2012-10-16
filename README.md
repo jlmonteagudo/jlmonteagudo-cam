@@ -5,7 +5,7 @@ Emitir video con tu dispositivo móvil con Node.js, Express.js y Socket.IO
 
 ## Instalación y ejecución
 
-Los pasos para descargar y ejecutar la aplicación son lo siguientes:
+Los pasos para descargar y ejecutar la aplicación son los siguientes:
 
     $ git clone https://github.com/jlmonteado/jlmonteagudo-cam.git
 
